@@ -1,0 +1,18 @@
+# Bench results — committed selectively by the human after a clean run.
+bench/results/*
+!bench/results/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.python-version
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Docker
+.docker/

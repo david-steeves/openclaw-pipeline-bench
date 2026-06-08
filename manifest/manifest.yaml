@@ -1,0 +1,84 @@
+# openclaw-pipeline-bench manifest
+# Single source of truth for workload parameters across all variants.
+# Edit here, re-run `make bench-all` — every variant reads this file.
+
+bench:
+  name: openclaw-pipeline-bench
+  version: 0.1.0
+  rfc: openclaw/rfcs#11
+
+hardware:
+  target: Mac mini M5 Pro
+  os: macOS 15.x (darwin)
+  arch: arm64
+  container_runtime: orbstack  # preferred over docker desktop for ARM perf
+
+workload:
+  agents: 10                    # "top-10 claws" — 10 concurrent synthetic agents
+  events_per_agent_per_sec: 10  # 100 ms cadence per agent
+  total_events_per_sec: 100     # = agents * events_per_agent_per_sec
+  event_payload_bytes: 512      # representative claw transcript line
+  read_back_window: 5           # each agent re-reads last 5 of its own events
+  warmup_seconds: 60
+  steady_state_seconds: 300
+
+substrate:
+  sqlite:
+    pragmas:
+      journal_mode: WAL
+      synchronous: NORMAL
+      temp_store: MEMORY
+      cache_size: -64000        # 64 MiB page cache
+  file_share:
+    fs: tmpfs                   # eliminates disk variance for baseline
+    path: /workspace
+    layout: per-agent-jsonl     # /workspace/agent-{n}.jsonl
+
+variants:
+  - id: baseline
+    description: File-share substrate, no pipeline, no analysts (today's shape)
+    substrate: file_share
+    pipeline_stages: []
+    analysts: []
+
+  - id: pipeline-noop
+    description: Three-stage pipeline (raw/processed/curated) on SQLite, no analyst skills
+    substrate: sqlite
+    pipeline_stages: [raw, processed, curated]
+    analysts: []
+
+  - id: pipeline-1-analyst
+    description: Three-stage pipeline + one synthetic analyst per stage boundary, all pass
+    substrate: sqlite
+    pipeline_stages: [raw, processed, curated]
+    analysts:
+      - seam: raw_to_processed
+        verdict: pass
+        cost_ms: 1
+      - seam: processed_to_curated
+        verdict: pass
+        cost_ms: 1
+
+  - id: pipeline-blocking
+    description: Three-stage pipeline + analyst that blocks 5% of payloads at processed→curated
+    substrate: sqlite
+    pipeline_stages: [raw, processed, curated]
+    analysts:
+      - seam: raw_to_processed
+        verdict: pass
+        cost_ms: 1
+      - seam: processed_to_curated
+        verdict: conditional_block
+        block_rate: 0.05
+        cost_ms: 1
+
+metrics:
+  latency_percentiles: [50, 95, 99]
+  rss_sample_hz: 1
+  runs_per_variant: 3            # report median + min/max
+  cold_start_runs_per_variant: 2 # discard first-touch, report second
+
+reporting:
+  results_dir: bench/results
+  report_template: scripts/report.md.j2
+  headline_required: true        # human writes 1-paragraph summary post-run

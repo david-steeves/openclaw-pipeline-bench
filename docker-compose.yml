@@ -1,0 +1,44 @@
+# openclaw-pipeline-bench
+# 4 variants share the same Dockerfile; environment + tmpfs mounts differ per variant.
+# Run via: docker compose run --rm <variant> --duration <s> --output <path>
+
+x-bench-common: &bench-common
+  build:
+    context: .
+    dockerfile: bench/Dockerfile
+  volumes:
+    - ./bench/results:/results
+  working_dir: /app
+
+services:
+  baseline:
+    <<: *bench-common
+    environment:
+      BENCH_VARIANT_ID: baseline
+      WORKSPACE_ROOT: /workspace
+    tmpfs:
+      - /workspace:size=512m
+
+  pipeline-noop:
+    <<: *bench-common
+    environment:
+      BENCH_VARIANT_ID: pipeline-noop
+      PIPELINE_ROOT: /data
+    tmpfs:
+      - /data:size=512m
+
+  pipeline-1-analyst:
+    <<: *bench-common
+    environment:
+      BENCH_VARIANT_ID: pipeline-1-analyst
+      PIPELINE_ROOT: /data
+    tmpfs:
+      - /data:size=512m
+
+  pipeline-blocking:
+    <<: *bench-common
+    environment:
+      BENCH_VARIANT_ID: pipeline-blocking
+      PIPELINE_ROOT: /data
+    tmpfs:
+      - /data:size=512m

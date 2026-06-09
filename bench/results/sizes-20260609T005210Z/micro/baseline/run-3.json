@@ -1,0 +1,21 @@
+{
+  "variant": "baseline",
+  "substrate": "file_share",
+  "analysts": 0,
+  "duration_s": 90,
+  "events_completed": 9000,
+  "events_blocked": 0,
+  "throughput_eps": 100.0,
+  "latency_ms": {
+    "p50": 1.2121660402044654,
+    "p95": 1.5976648952346295,
+    "p99": 1.773123355815187,
+    "max": 6.141832913272083,
+    "min": 0.07187505252659321
+  },
+  "rss_mb": {
+    "peak": 29.703125,
+    "mean": 29.455555555555556
+  },
+  "cold_start_ms": 1.0937080951407552
+}

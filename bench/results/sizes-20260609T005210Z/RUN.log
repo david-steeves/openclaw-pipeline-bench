@@ -1,0 +1,170 @@
+Results dir: bench/results/sizes-20260609T005210Z
+=== [micro] baseline run-1 00:52:10Z ===
+variant=baseline substrate=file_share stages=[] analysts=0 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=baseline p50=1.085812516976148 p95=1.534580992301926 p99=1.6993326682131737 rss_peak_mb=29.734375 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/baseline/run-1.json
+=== [micro] baseline run-2 00:53:41Z ===
+variant=baseline substrate=file_share stages=[] analysts=0 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=baseline p50=1.2148544192314148 p95=1.6709538584109396 p99=1.888497150503099 rss_peak_mb=29.609375 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/baseline/run-2.json
+=== [micro] baseline run-3 00:55:11Z ===
+variant=baseline substrate=file_share stages=[] analysts=0 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=baseline p50=1.2121660402044654 p95=1.5976648952346295 p99=1.773123355815187 rss_peak_mb=29.703125 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/baseline/run-3.json
+=== [micro] sqlite-flat run-1 00:56:41Z ===
+variant=sqlite-flat substrate=sqlite_flat stages=[] analysts=0 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=sqlite-flat p50=0.9079370065592229 p95=1.6787068452686071 p99=3.539217918878421 rss_peak_mb=36.5625 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/sqlite-flat/run-1.json
+=== [micro] sqlite-flat run-2 00:58:11Z ===
+variant=sqlite-flat substrate=sqlite_flat stages=[] analysts=0 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=sqlite-flat p50=0.9416879620403051 p95=1.7104517668485641 p99=3.6922005959786475 rss_peak_mb=36.546875 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/sqlite-flat/run-2.json
+=== [micro] sqlite-flat run-3 00:59:41Z ===
+variant=sqlite-flat substrate=sqlite_flat stages=[] analysts=0 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=sqlite-flat p50=1.0001669870689511 p95=1.745368738193065 p99=3.8343570881988853 rss_peak_mb=36.546875 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/sqlite-flat/run-3.json
+=== [micro] pipeline-noop run-1 01:01:11Z ===
+variant=pipeline-noop substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=pipeline-noop p50=3.6077499971725047 p95=5.065939557971433 p99=6.645705915289 rss_peak_mb=50.40625 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/pipeline-noop/run-1.json
+=== [micro] pipeline-noop run-2 01:02:42Z ===
+variant=pipeline-noop substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=pipeline-noop p50=3.7154789897613227 p95=5.198185425251722 p99=6.524336641887203 rss_peak_mb=50.515625 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/pipeline-noop/run-2.json
+=== [micro] pipeline-noop run-3 01:04:12Z ===
+variant=pipeline-noop substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=pipeline-noop p50=4.026666458230466 p95=5.495909025194123 p99=7.665290014119819 rss_peak_mb=50.65625 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/pipeline-noop/run-3.json
+=== [micro] pipeline-fullcopy run-1 01:05:42Z ===
+variant=pipeline-fullcopy substrate=sqlite_fullcopy stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=pipeline-fullcopy p50=5.251082999166101 p95=6.57849793205969 p99=7.384775246027857 rss_peak_mb=39.484375 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/pipeline-fullcopy/run-1.json
+=== [micro] pipeline-fullcopy run-2 01:07:12Z ===
+variant=pipeline-fullcopy substrate=sqlite_fullcopy stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=pipeline-fullcopy p50=5.262396007310599 p95=6.584514252608642 p99=7.0516789017710835 rss_peak_mb=39.421875 throughput=99.7
+wrote bench/results/sizes-20260609T005210Z/micro/pipeline-fullcopy/run-2.json
+=== [micro] pipeline-fullcopy run-3 01:08:50Z ===
+variant=pipeline-fullcopy substrate=sqlite_fullcopy stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=pipeline-fullcopy p50=5.212146032135934 p95=6.642110185930505 p99=8.135130917653441 rss_peak_mb=39.421875 throughput=99.7
+wrote bench/results/sizes-20260609T005210Z/micro/pipeline-fullcopy/run-3.json
+=== [micro] pipeline-1-analyst run-1 01:23:36Z ===
+variant=pipeline-1-analyst substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=2 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=pipeline-1-analyst p50=4.819916503038257 p95=6.157222844194621 p99=8.367493666009977 rss_peak_mb=50.90625 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/pipeline-1-analyst/run-1.json
+=== [micro] pipeline-1-analyst run-2 01:25:07Z ===
+variant=pipeline-1-analyst substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=2 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=pipeline-1-analyst p50=4.7220419510267675 p95=6.002203834941611 p99=7.931869083549827 rss_peak_mb=50.921875 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/pipeline-1-analyst/run-2.json
+=== [micro] pipeline-1-analyst run-3 01:26:37Z ===
+variant=pipeline-1-analyst substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=2 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=pipeline-1-analyst p50=4.76300047012046 p95=5.961950664641336 p99=8.17181196063757 rss_peak_mb=51.03125 throughput=100.0
+wrote bench/results/sizes-20260609T005210Z/micro/pipeline-1-analyst/run-3.json
+=== [micro] pipeline-blocking run-1 01:28:07Z ===
+variant=pipeline-blocking substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=2 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=pipeline-blocking p50=4.750458057969809 p95=6.06659974437207 p99=7.55845210980624 rss_peak_mb=50.84375 throughput=94.8
+wrote bench/results/sizes-20260609T005210Z/micro/pipeline-blocking/run-1.json
+=== [micro] pipeline-blocking run-2 01:29:37Z ===
+variant=pipeline-blocking substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=2 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=pipeline-blocking p50=4.8122500302270055 p95=6.117054831702262 p99=7.132527441717684 rss_peak_mb=50.765625 throughput=95.1
+wrote bench/results/sizes-20260609T005210Z/micro/pipeline-blocking/run-2.json
+=== [micro] pipeline-blocking run-3 01:31:07Z ===
+variant=pipeline-blocking substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=2 payload_bytes=512 eps_per_agent=10.0 duration=90s in_memory=True
+RESULT variant=pipeline-blocking p50=4.853542021010071 p95=6.171646335860714 p99=7.270876053953543 rss_peak_mb=50.6875 throughput=95.1
+wrote bench/results/sizes-20260609T005210Z/micro/pipeline-blocking/run-3.json
+=== [macro] baseline run-1 01:32:37Z ===
+variant=baseline substrate=file_share stages=[] analysts=0 payload_bytes=5242880 eps_per_agent=1.0 duration=90s in_memory=True
+RESULT variant=baseline p50=5.199041974265128 p95=10.38481310242787 p99=16.396713351132348 rss_peak_mb=440.359375 throughput=10.0
+wrote bench/results/sizes-20260609T005210Z/macro/baseline/run-1.json
+=== [macro] baseline run-2 01:34:07Z ===
+variant=baseline substrate=file_share stages=[] analysts=0 payload_bytes=5242880 eps_per_agent=1.0 duration=90s in_memory=True
+RESULT variant=baseline p50=4.301271052099764 p95=8.770577353425324 p99=11.227579516125843 rss_peak_mb=430.28125 throughput=10.0
+wrote bench/results/sizes-20260609T005210Z/macro/baseline/run-2.json
+=== [macro] baseline run-3 01:35:38Z ===
+variant=baseline substrate=file_share stages=[] analysts=0 payload_bytes=5242880 eps_per_agent=1.0 duration=90s in_memory=True
+RESULT variant=baseline p50=5.537145538255572 p95=10.063862183596939 p99=13.895888364640996 rss_peak_mb=430.375 throughput=10.0
+wrote bench/results/sizes-20260609T005210Z/macro/baseline/run-3.json
+=== [macro] sqlite-flat run-1 01:37:08Z ===
+variant=sqlite-flat substrate=sqlite_flat stages=[] analysts=0 payload_bytes=5242880 eps_per_agent=1.0 duration=90s in_memory=True
+RESULT variant=sqlite-flat p50=76.03052048943937 p95=121.7244706058409 p99=124.0082160232123 rss_peak_mb=243.46875 throughput=10.0
+wrote bench/results/sizes-20260609T005210Z/macro/sqlite-flat/run-1.json
+=== [macro] sqlite-flat run-2 01:38:38Z ===
+variant=sqlite-flat substrate=sqlite_flat stages=[] analysts=0 payload_bytes=5242880 eps_per_agent=1.0 duration=90s in_memory=True
+RESULT variant=sqlite-flat p50=75.27377101359889 p95=121.38419194379821 p99=125.90262664132752 rss_peak_mb=243.453125 throughput=10.0
+wrote bench/results/sizes-20260609T005210Z/macro/sqlite-flat/run-2.json
+=== [macro] sqlite-flat run-3 01:40:08Z ===
+variant=sqlite-flat substrate=sqlite_flat stages=[] analysts=0 payload_bytes=5242880 eps_per_agent=1.0 duration=90s in_memory=True
+RESULT variant=sqlite-flat p50=73.95472947973758 p95=119.58254408091307 p99=123.14584046485834 rss_peak_mb=243.53125 throughput=10.0
+wrote bench/results/sizes-20260609T005210Z/macro/sqlite-flat/run-3.json
+=== [macro] pipeline-noop run-1 01:41:38Z ===
+variant=pipeline-noop substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=5242880 eps_per_agent=1.0 duration=90s in_memory=True
+RESULT variant=pipeline-noop p50=132.18904146924615 p95=192.56286728777923 p99=207.68649097532034 rss_peak_mb=396.03125 throughput=10.0
+wrote bench/results/sizes-20260609T005210Z/macro/pipeline-noop/run-1.json
+=== [macro] pipeline-noop run-2 01:43:09Z ===
+variant=pipeline-noop substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=5242880 eps_per_agent=1.0 duration=90s in_memory=True
+RESULT variant=pipeline-noop p50=137.47068704105914 p95=193.45657504163682 p99=199.82006215373985 rss_peak_mb=390.921875 throughput=10.0
+wrote bench/results/sizes-20260609T005210Z/macro/pipeline-noop/run-2.json
+=== [macro] pipeline-noop run-3 01:44:39Z ===
+variant=pipeline-noop substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=5242880 eps_per_agent=1.0 duration=90s in_memory=True
+RESULT variant=pipeline-noop p50=133.61825002357364 p95=193.2972306618467 p99=200.0000338384416 rss_peak_mb=395.84375 throughput=10.0
+wrote bench/results/sizes-20260609T005210Z/macro/pipeline-noop/run-3.json
+=== [macro] pipeline-fullcopy run-1 01:46:09Z ===
+variant=pipeline-fullcopy substrate=sqlite_fullcopy stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=5242880 eps_per_agent=1.0 duration=90s in_memory=True
+RESULT variant=pipeline-fullcopy p50=187.49770848080516 p95=213.66628888063133 p99=227.69586742739193 rss_peak_mb=414.265625 throughput=10.0
+wrote bench/results/sizes-20260609T005210Z/macro/pipeline-fullcopy/run-1.json
+=== [macro] pipeline-fullcopy run-2 01:47:39Z ===
+variant=pipeline-fullcopy substrate=sqlite_fullcopy stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=5242880 eps_per_agent=1.0 duration=90s in_memory=True
+RESULT variant=pipeline-fullcopy p50=183.93083341652527 p95=210.2902413229458 p99=216.78655670839362 rss_peak_mb=414.078125 throughput=10.0
+wrote bench/results/sizes-20260609T005210Z/macro/pipeline-fullcopy/run-2.json
+=== [macro] pipeline-fullcopy run-3 01:49:10Z ===
+variant=pipeline-fullcopy substrate=sqlite_fullcopy stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=5242880 eps_per_agent=1.0 duration=90s in_memory=True
+RESULT variant=pipeline-fullcopy p50=106.45587556064129 p95=194.78176070260815 p99=1448.5107288777363 rss_peak_mb=414.234375 throughput=10.0
+wrote bench/results/sizes-20260609T005210Z/macro/pipeline-fullcopy/run-3.json
+=== [super-macro] baseline run-1 01:50:41Z ===
+variant=baseline substrate=file_share stages=[] analysts=0 payload_bytes=104857600 eps_per_agent=0.2 duration=90s in_memory=True
+RESULT variant=baseline p50=17.28164596715942 p95=69.62422718643211 p99=147.75753247668035 rss_peak_mb=6829.921875 throughput=2.0
+wrote bench/results/sizes-20260609T005210Z/super-macro/baseline/run-1.json
+=== [super-macro] baseline run-2 01:52:11Z ===
+variant=baseline substrate=file_share stages=[] analysts=0 payload_bytes=104857600 eps_per_agent=0.2 duration=90s in_memory=True
+RESULT variant=baseline p50=14.955125050619245 p95=54.53363687265664 p99=166.47562669357285 rss_peak_mb=6630.0625 throughput=2.0
+wrote bench/results/sizes-20260609T005210Z/super-macro/baseline/run-2.json
+=== [super-macro] baseline run-3 01:53:43Z ===
+variant=baseline substrate=file_share stages=[] analysts=0 payload_bytes=104857600 eps_per_agent=0.2 duration=90s in_memory=True
+RESULT variant=baseline p50=14.956249913666397 p95=42.87415475118905 p99=168.54393526678905 rss_peak_mb=6629.84375 throughput=2.0
+wrote bench/results/sizes-20260609T005210Z/super-macro/baseline/run-3.json
+=== [super-macro] sqlite-flat run-1 01:55:14Z ===
+variant=sqlite-flat substrate=sqlite_flat stages=[] analysts=0 payload_bytes=104857600 eps_per_agent=0.2 duration=90s in_memory=True
+RESULT variant=sqlite-flat p50=955.2064999588765 p95=1751.4913287595846 p99=1912.859233742347 rss_peak_mb=2808.703125 throughput=2.0
+wrote bench/results/sizes-20260609T005210Z/super-macro/sqlite-flat/run-1.json
+=== [super-macro] sqlite-flat run-2 01:56:45Z ===
+variant=sqlite-flat substrate=sqlite_flat stages=[] analysts=0 payload_bytes=104857600 eps_per_agent=0.2 duration=90s in_memory=True
+RESULT variant=sqlite-flat p50=894.8968540062197 p95=1738.684781838674 p99=1761.8226188141853 rss_peak_mb=2808.6875 throughput=2.0
+wrote bench/results/sizes-20260609T005210Z/super-macro/sqlite-flat/run-2.json
+=== [super-macro] sqlite-flat run-3 01:58:17Z ===
+variant=sqlite-flat substrate=sqlite_flat stages=[] analysts=0 payload_bytes=104857600 eps_per_agent=0.2 duration=90s in_memory=True
+RESULT variant=sqlite-flat p50=899.7052915510722 p95=1750.5095065338537 p99=1779.6312800073065 rss_peak_mb=2808.828125 throughput=2.0
+wrote bench/results/sizes-20260609T005210Z/super-macro/sqlite-flat/run-3.json
+=== [super-macro] pipeline-noop run-1 01:59:47Z ===
+variant=pipeline-noop substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=104857600 eps_per_agent=0.2 duration=90s in_memory=True
+RESULT variant=pipeline-noop p50=2875.790083548054 p95=4344.182460702723 p99=4909.037433078047 rss_peak_mb=2866.703125 throughput=2.0
+wrote bench/results/sizes-20260609T005210Z/super-macro/pipeline-noop/run-1.json
+=== [super-macro] pipeline-noop run-2 02:01:18Z ===
+variant=pipeline-noop substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=104857600 eps_per_agent=0.2 duration=90s in_memory=True
+RESULT variant=pipeline-noop p50=2912.051166931633 p95=4287.376276700525 p99=4492.949548473116 rss_peak_mb=2866.703125 throughput=2.0
+wrote bench/results/sizes-20260609T005210Z/super-macro/pipeline-noop/run-2.json
+=== [super-macro] pipeline-noop run-3 02:02:49Z ===
+variant=pipeline-noop substrate=sqlite stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=104857600 eps_per_agent=0.2 duration=90s in_memory=True
+RESULT variant=pipeline-noop p50=2727.8591879294254 p95=4042.139072564896 p99=4564.577369702747 rss_peak_mb=2866.796875 throughput=2.0
+wrote bench/results/sizes-20260609T005210Z/super-macro/pipeline-noop/run-3.json
+=== [super-macro] pipeline-fullcopy run-1 02:04:19Z ===
+variant=pipeline-fullcopy substrate=sqlite_fullcopy stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=104857600 eps_per_agent=0.2 duration=90s in_memory=True
+RESULT variant=pipeline-fullcopy p50=3305.0427504931577 p95=4187.035335408291 p99=4808.902527492028 rss_peak_mb=3766.734375 throughput=2.0
+wrote bench/results/sizes-20260609T005210Z/super-macro/pipeline-fullcopy/run-1.json
+=== [super-macro] pipeline-fullcopy run-2 02:06:01Z ===
+variant=pipeline-fullcopy substrate=sqlite_fullcopy stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=104857600 eps_per_agent=0.2 duration=90s in_memory=True
+RESULT variant=pipeline-fullcopy p50=2689.2738955211826 p95=7158.648033061763 p99=8372.805968783796 rss_peak_mb=3766.859375 throughput=2.0
+wrote bench/results/sizes-20260609T005210Z/super-macro/pipeline-fullcopy/run-2.json
+=== [super-macro] pipeline-fullcopy run-3 02:23:27Z ===
+variant=pipeline-fullcopy substrate=sqlite_fullcopy stages=['raw', 'processed', 'curated'] analysts=0 payload_bytes=104857600 eps_per_agent=0.2 duration=90s in_memory=True
+RESULT variant=pipeline-fullcopy p50=2487.344666442368 p95=5316.802986862604 p99=7417.986275746953 rss_peak_mb=3767.1875 throughput=2.0
+wrote bench/results/sizes-20260609T005210Z/super-macro/pipeline-fullcopy/run-3.json
+DONE 02:40:48Z

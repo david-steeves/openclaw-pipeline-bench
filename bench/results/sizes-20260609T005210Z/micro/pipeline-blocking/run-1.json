@@ -1,0 +1,21 @@
+{
+  "variant": "pipeline-blocking",
+  "substrate": "sqlite",
+  "analysts": 2,
+  "duration_s": 90,
+  "events_completed": 8531,
+  "events_blocked": 469,
+  "throughput_eps": 94.78888888888889,
+  "latency_ms": {
+    "p50": 4.750458057969809,
+    "p95": 6.06659974437207,
+    "p99": 7.55845210980624,
+    "max": 10.791916050948203,
+    "min": 2.759207971394062
+  },
+  "rss_mb": {
+    "peak": 50.84375,
+    "mean": 41.327083333333334
+  },
+  "cold_start_ms": 4.228042089380324
+}

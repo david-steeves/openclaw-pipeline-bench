@@ -1,0 +1,21 @@
+{
+  "variant": "pipeline-fullcopy",
+  "substrate": "sqlite_fullcopy",
+  "analysts": 0,
+  "duration_s": 90,
+  "events_completed": 9000,
+  "events_blocked": 0,
+  "throughput_eps": 100.0,
+  "latency_ms": {
+    "p50": 5.251082999166101,
+    "p95": 6.57849793205969,
+    "p99": 7.384775246027857,
+    "max": 18.615667009726167,
+    "min": 1.5650000423192978
+  },
+  "rss_mb": {
+    "peak": 39.484375,
+    "mean": 35.71388888888889
+  },
+  "cold_start_ms": 4.617957980372012
+}

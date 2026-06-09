@@ -15,12 +15,38 @@ hardware:
 
 workload:
   agents: 10                    # "top-10 claws" — 10 concurrent synthetic agents
-  events_per_agent_per_sec: 10  # 100 ms cadence per agent
+  events_per_agent_per_sec: 10  # 100 ms cadence per agent (default = micro)
   total_events_per_sec: 100     # = agents * events_per_agent_per_sec
-  event_payload_bytes: 512      # representative claw transcript line
+  event_payload_bytes: 512      # default = micro (overridden per size class)
   read_back_window: 5           # each agent re-reads last 5 of its own events
   warmup_seconds: 60
   steady_state_seconds: 300
+
+# Payload size matrix. The harness can override --payload-bytes and --eps-per-agent
+# at the CLI; this section documents the three classes the run-all script iterates.
+# Eps is scaled with size so total bandwidth stays in the 50 KB/s – 200 MB/s band,
+# keeping substrate cost (not memory/disk bandwidth) as the measurand.
+size_classes:
+  - id: micro
+    description: Chat-message-sized agent log lines, function-call results
+    payload_bytes: 512                # 0.5 KB
+    eps_per_agent: 10                 # 100 eps total -> ~50 KB/s
+    warmup_seconds: 30
+    steady_state_seconds: 60
+
+  - id: macro
+    description: RAG-retrieved chunks, large model responses, document-sized blobs
+    payload_bytes: 5242880            # 5 MB
+    eps_per_agent: 1                  # 10 eps total -> ~50 MB/s
+    warmup_seconds: 30
+    steady_state_seconds: 60
+
+  - id: super-macro
+    description: Multimodal assets (video frames, audio files), dataset shards
+    payload_bytes: 104857600          # 100 MB
+    eps_per_agent: 0.2                # 2 eps total -> ~200 MB/s
+    warmup_seconds: 30
+    steady_state_seconds: 60
 
 substrate:
   sqlite:

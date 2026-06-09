@@ -1,0 +1,21 @@
+{
+  "variant": "pipeline-1-analyst",
+  "substrate": "sqlite",
+  "analysts": 2,
+  "duration_s": 90,
+  "events_completed": 9000,
+  "events_blocked": 0,
+  "throughput_eps": 100.0,
+  "latency_ms": {
+    "p50": 4.76300047012046,
+    "p95": 5.961950664641336,
+    "p99": 8.17181196063757,
+    "max": 11.17174990940839,
+    "min": 2.74787493981421
+  },
+  "rss_mb": {
+    "peak": 51.03125,
+    "mean": 41.44861111111111
+  },
+  "cold_start_ms": 4.001333029009402
+}

@@ -1,0 +1,21 @@
+{
+  "variant": "sqlite-flat",
+  "substrate": "sqlite_flat",
+  "analysts": 0,
+  "duration_s": 90,
+  "events_completed": 900,
+  "events_blocked": 0,
+  "throughput_eps": 10.0,
+  "latency_ms": {
+    "p50": 75.27377101359889,
+    "p95": 121.38419194379821,
+    "p99": 125.90262664132752,
+    "max": 148.49466609302908,
+    "min": 11.025457992218435
+  },
+  "rss_mb": {
+    "peak": 243.453125,
+    "mean": 240.33923611111112
+  },
+  "cold_start_ms": 1.733125071041286
+}

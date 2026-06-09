@@ -1,0 +1,21 @@
+{
+  "variant": "pipeline-noop",
+  "substrate": "sqlite",
+  "analysts": 0,
+  "duration_s": 90,
+  "events_completed": 180,
+  "events_blocked": 0,
+  "throughput_eps": 2.0,
+  "latency_ms": {
+    "p50": 2875.790083548054,
+    "p95": 4344.182460702723,
+    "p99": 4909.037433078047,
+    "max": 5063.096125028096,
+    "min": 827.4692919803783
+  },
+  "rss_mb": {
+    "peak": 2866.703125,
+    "mean": 2829.9864354395604
+  },
+  "cold_start_ms": 5.041833035647869
+}

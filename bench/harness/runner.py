@@ -110,17 +110,14 @@ async def build_substrate(variant: VariantConfig, in_memory: bool):
 async def agent_loop(agent_id: int, substrate, payload_bytes: int, cadence_s: float,
                     stop_at: float, latencies: list[float], blocks: list[int]):
     """One agent: emits events at fixed cadence; records per-event durability latency."""
-    payload_filler = "x" * (payload_bytes - 128)  # 128 bytes reserved for metadata
+    # 128 bytes reserved for metadata. Avoid json.dumps so 100 MB payloads don't pay
+    # the encoder cost — substrate cost is what we want to measure, not the producer.
+    payload_filler = "x" * max(0, payload_bytes - 128)
     seq = 0
     next_tick = time.monotonic()
     while time.monotonic() < stop_at:
         seq += 1
-        payload = json.dumps({
-            "agent": agent_id,
-            "seq": seq,
-            "ts": time.time(),
-            "data": payload_filler,
-        })
+        payload = f'{{"agent":{agent_id},"seq":{seq},"ts":{time.time()},"data":"{payload_filler}"}}'
         emit_ts = time.monotonic()
         result = await substrate.emit(agent_id, payload)
         durable_ts = time.monotonic()
@@ -152,16 +149,22 @@ async def rss_sampler(stop_event: asyncio.Event, samples: list[float]):
 # -----------------------------------------------------------------------------
 
 async def run(variant_id: str, duration_override: int | None, output: Path | None,
-              in_memory: bool, manifest_path: Path):
+              in_memory: bool, manifest_path: Path,
+              payload_bytes_override: int | None = None,
+              eps_per_agent_override: float | None = None):
     manifest = load_manifest(manifest_path)
     workload = get_workload(manifest)
     variant = get_variant(manifest, variant_id)
 
+    payload_bytes = payload_bytes_override or workload.event_payload_bytes
+    eps_per_agent = eps_per_agent_override or workload.events_per_agent_per_sec
+
     duration = duration_override or (workload.warmup_seconds + workload.steady_state_seconds)
-    cadence_s = 1.0 / workload.events_per_agent_per_sec
+    cadence_s = 1.0 / eps_per_agent
 
     print(f"variant={variant.id} substrate={variant.substrate} "
           f"stages={variant.pipeline_stages} analysts={len(variant.analysts)} "
+          f"payload_bytes={payload_bytes} eps_per_agent={eps_per_agent} "
           f"duration={duration}s in_memory={in_memory}")
 
     cold_start_begin = time.monotonic()
@@ -178,7 +181,7 @@ async def run(variant_id: str, duration_override: int | None, output: Path | Non
     stop_at = time.monotonic() + duration
     agent_tasks = [
         asyncio.create_task(
-            agent_loop(i, substrate, workload.event_payload_bytes, cadence_s,
+            agent_loop(i, substrate, payload_bytes, cadence_s,
                        stop_at, latencies, blocks)
         )
         for i in range(workload.agents)
@@ -192,7 +195,7 @@ async def run(variant_id: str, duration_override: int | None, output: Path | Non
     # Discard warmup window from latencies (approximate: drop first N events
     # where N = warmup_seconds * total_events_per_sec)
     if duration_override is None:
-        discard = workload.warmup_seconds * workload.events_per_agent_per_sec * workload.agents
+        discard = int(workload.warmup_seconds * eps_per_agent * workload.agents)
         latencies = latencies[discard:]
 
     metrics = {
@@ -241,6 +244,10 @@ def main():
                         help="write metrics.json to this path")
     parser.add_argument("--in-memory", action="store_true",
                         help="use ':memory:' SQLite + tmpfs not required for file_share")
+    parser.add_argument("--payload-bytes", type=int, default=None,
+                        help="override manifest event_payload_bytes (for size-class sweeps)")
+    parser.add_argument("--eps-per-agent", type=float, default=None,
+                        help="override manifest events_per_agent_per_sec (for size-class sweeps)")
     parser.add_argument("--manifest", type=Path, default=Path("/app/manifest/manifest.yaml"),
                         help="path to manifest.yaml")
     args = parser.parse_args()
@@ -248,7 +255,9 @@ def main():
     if not args.variant:
         parser.error("--variant required (or set BENCH_VARIANT_ID)")
 
-    asyncio.run(run(args.variant, args.duration, args.output, args.in_memory, args.manifest))
+    asyncio.run(run(args.variant, args.duration, args.output, args.in_memory, args.manifest,
+                    payload_bytes_override=args.payload_bytes,
+                    eps_per_agent_override=args.eps_per_agent))
 
 
 if __name__ == "__main__":

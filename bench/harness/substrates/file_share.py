@@ -10,6 +10,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import tempfile
 import time
 from collections import deque
 from pathlib import Path
@@ -17,21 +18,23 @@ from pathlib import Path
 
 class FileShareSubstrate:
     def __init__(self, in_memory: bool = False, root: str | None = None):
-        self.root = Path(root or os.environ.get("WORKSPACE_ROOT", "/workspace"))
-        self.in_memory = in_memory
+        # in_memory=True means "use a tempdir on the host's default tmp" — not an
+        # in-process StringIO. The actual baseline must exercise the OS file path,
+        # otherwise we measure StringIO not file-share.
+        if in_memory:
+            self._tmpdir = tempfile.TemporaryDirectory(prefix="bench-baseline-")
+            self.root = Path(self._tmpdir.name)
+        else:
+            self._tmpdir = None
+            self.root = Path(root or os.environ.get("WORKSPACE_ROOT", "/workspace"))
+        self.root.mkdir(parents=True, exist_ok=True)
         self._files: dict[int, any] = {}
         self._read_back_cache: dict[int, deque] = {}
-        if not in_memory:
-            self.root.mkdir(parents=True, exist_ok=True)
 
     def _file_for(self, agent_id: int):
         if agent_id not in self._files:
-            if self.in_memory:
-                from io import StringIO
-                self._files[agent_id] = StringIO()
-            else:
-                path = self.root / f"agent-{agent_id}.jsonl"
-                self._files[agent_id] = open(path, "a", buffering=1)
+            path = self.root / f"agent-{agent_id}.jsonl"
+            self._files[agent_id] = open(path, "a", buffering=1)
             self._read_back_cache[agent_id] = deque(maxlen=5)
         return self._files[agent_id]
 
@@ -59,3 +62,5 @@ class FileShareSubstrate:
         for f in self._files.values():
             if hasattr(f, "close"):
                 f.close()
+        if self._tmpdir is not None:
+            self._tmpdir.cleanup()

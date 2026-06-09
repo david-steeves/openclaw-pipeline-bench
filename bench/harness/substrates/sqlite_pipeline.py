@@ -16,6 +16,8 @@ import asyncio
 import hashlib
 import os
 import sqlite3
+import tempfile
+import threading
 import time
 from pathlib import Path
 
@@ -24,7 +26,7 @@ from harness.analysts.blocking_analyst import BlockingAnalyst
 
 
 def _open_db(path: Path | str) -> sqlite3.Connection:
-    conn = sqlite3.connect(path, isolation_level=None, check_same_thread=False)
+    conn = sqlite3.connect(str(path), isolation_level=None, check_same_thread=False)
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA synchronous=NORMAL")
     conn.execute("PRAGMA temp_store=MEMORY")
@@ -61,17 +63,21 @@ class SqlitePipelineSubstrate:
                  in_memory: bool = False, root: str | None = None):
         self.stages = stages or ["raw", "processed", "curated"]
         self.in_memory = in_memory
-        root_dir = Path(root or os.environ.get("PIPELINE_ROOT", "/data"))
-        if not in_memory:
+        if in_memory:
+            self._tmpdir = tempfile.TemporaryDirectory(prefix="bench-")
+            root_dir = Path(self._tmpdir.name)
+        else:
+            self._tmpdir = None
+            root_dir = Path(root or os.environ.get("PIPELINE_ROOT", "/data"))
             root_dir.mkdir(parents=True, exist_ok=True)
 
         def db_path(name: str) -> str:
-            if in_memory:
-                return f"file:{name}?mode=memory&cache=shared"
             return str(root_dir / f"{name}.db")
 
         self._conns = {stage: _open_db(db_path(stage)) for stage in self.stages}
+        self._locks = {stage: threading.Lock() for stage in self.stages}
         self._evidence = _open_evidence(db_path("evidence"))
+        self._evidence_lock = threading.Lock()
 
         # Register analysts per seam.
         self._seam_analysts: dict[str, list] = {}
@@ -82,12 +88,14 @@ class SqlitePipelineSubstrate:
                     block_rate=spec.get("block_rate", 0.05),
                     cost_ms=spec.get("cost_ms", 1),
                     evidence_conn=self._evidence,
+                    evidence_lock=self._evidence_lock,
                     seam=seam,
                 )
             else:
                 analyst = PassAnalyst(
                     cost_ms=spec.get("cost_ms", 1),
                     evidence_conn=self._evidence,
+                    evidence_lock=self._evidence_lock,
                     seam=seam,
                 )
             self._seam_analysts.setdefault(seam, []).append(analyst)
@@ -115,18 +123,22 @@ class SqlitePipelineSubstrate:
         return {"verdict": "pass"}
 
     def _insert(self, stage: str, agent_id: int, payload: str):
-        self._conns[stage].execute(
-            "INSERT INTO items (agent_id, payload, ts) VALUES (?, ?, ?)",
-            (agent_id, payload, time.time()),
-        )
+        with self._locks[stage]:
+            self._conns[stage].execute(
+                "INSERT INTO items (agent_id, payload, ts) VALUES (?, ?, ?)",
+                (agent_id, payload, time.time()),
+            )
 
     def _stamp_empty(self, seam: str):
-        self._evidence.execute(
-            "INSERT INTO evidence (seam, analyst, verdict, rule, ts) VALUES (?, ?, ?, ?, ?)",
-            (seam, "<none>", "<empty-stamp>", None, time.time()),
-        )
+        with self._evidence_lock:
+            self._evidence.execute(
+                "INSERT INTO evidence (seam, analyst, verdict, rule, ts) VALUES (?, ?, ?, ?, ?)",
+                (seam, "<none>", "<empty-stamp>", None, time.time()),
+            )
 
     async def close(self):
         for c in self._conns.values():
             c.close()
         self._evidence.close()
+        if self._tmpdir is not None:
+            self._tmpdir.cleanup()

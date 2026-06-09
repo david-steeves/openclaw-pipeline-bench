@@ -83,9 +83,19 @@ async def build_substrate(variant: VariantConfig, in_memory: bool):
     if variant.substrate == "file_share":
         from harness.substrates.file_share import FileShareSubstrate
         return FileShareSubstrate(in_memory=in_memory)
+    if variant.substrate == "sqlite_flat":
+        from harness.substrates.sqlite_flat import SqliteFlatSubstrate
+        return SqliteFlatSubstrate(in_memory=in_memory)
     if variant.substrate == "sqlite":
         from harness.substrates.sqlite_pipeline import SqlitePipelineSubstrate
         return SqlitePipelineSubstrate(
+            stages=variant.pipeline_stages,
+            analysts=variant.analysts,
+            in_memory=in_memory,
+        )
+    if variant.substrate == "sqlite_fullcopy":
+        from harness.substrates.sqlite_fullcopy import SqliteFullCopySubstrate
+        return SqliteFullCopySubstrate(
             stages=variant.pipeline_stages,
             analysts=variant.analysts,
             in_memory=in_memory,

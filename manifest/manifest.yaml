@@ -41,9 +41,21 @@ variants:
     pipeline_stages: []
     analysts: []
 
+  - id: sqlite-flat
+    description: Single SQLite database + single table, no pipeline, no analysts (isolates SQLite-engine cost from pipeline-shape cost)
+    substrate: sqlite_flat
+    pipeline_stages: []
+    analysts: []
+
   - id: pipeline-noop
-    description: Three-stage pipeline (raw/processed/curated) on SQLite, no analyst skills
+    description: Three-stage pipeline (raw/processed/curated) on SQLite, no analyst skills, lower-bound promotion (INSERT-only, no SELECT/DELETE from source)
     substrate: sqlite
+    pipeline_stages: [raw, processed, curated]
+    analysts: []
+
+  - id: pipeline-fullcopy
+    description: Three-stage pipeline with faithful SELECT+INSERT+DELETE promotion per seam, no analysts (upper-bound pipeline cost)
+    substrate: sqlite_fullcopy
     pipeline_stages: [raw, processed, curated]
     analysts: []
 

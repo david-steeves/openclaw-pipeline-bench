@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 
-VARIANT_ORDER = ["baseline", "pipeline-noop", "pipeline-1-analyst", "pipeline-blocking"]
+VARIANT_ORDER = ["baseline", "sqlite-flat", "pipeline-noop", "pipeline-fullcopy", "pipeline-1-analyst", "pipeline-blocking"]
 
 
 def collect(results_dir: Path) -> dict[str, list[dict]]:

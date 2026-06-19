@@ -168,10 +168,18 @@ Numbers ready to cite in PR thread by EOD 2026-06-09 if started in the morning.
 > source of truth — do not hardcode workload params. Numbers are for citing in
 > openclaw/rfcs#11; sanity gates in step 6 are required before sharing.
 
-## Follow-up work (after the bench numbers ship)
+## Follow-up work (bench numbers already shipped; this is the evidence track)
+
+The bench numbers + reframing reply went to openclaw/rfcs#11 on 2026-06-09
+(see https://github.com/openclaw/rfcs/pull/11#issuecomment-4656114434). RFC 0010
+is awaiting maintainer reaction.
 
 See sibling plan: [`2026-06-19-policy-harness-extension.md`](./2026-06-19-policy-harness-extension.md).
-That plan covers RFC 0012 (reference review teams + layered policy composition +
-clarifying prompts) and a new `openclaw-test-harnesses` repo that re-runs the
-pipeline-bench perf tests against *real* claws instead of synthetic
-pass-analysts — the "real cost" number for the next RFC update.
+That plan covers Stage-1 reference implementations + a public
+`openclaw-test-harnesses` repo (per-claw governed-mode reference impl,
+layered policy composition, clarifying prompts, mock data, perf harness
+re-running pipeline-bench variants against real claws). Output is a single
+follow-up PR comment on openclaw/rfcs#11 (draft at
+[`pr-comment-when-impl-ships.md`](./pr-comment-when-impl-ships.md)) — **not**
+a new RFC. Follow-up RFCs land only if/when maintainers ask for the sub-designs
+to be formalized.

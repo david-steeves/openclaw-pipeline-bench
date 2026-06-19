@@ -137,18 +137,24 @@ When the bench finishes:
 If anything in this doc is wrong, fix it in place and commit. This file is the
 contract between MacBook-session-Claude and M5-session-Claude.
 
-## Follow-up work after the bench numbers ship
+## Follow-up work — bench numbers already posted (2026-06-09)
 
-After `make bench-all` finishes and the numbers are posted to
-[openclaw/rfcs#11](https://github.com/openclaw/rfcs/pull/11), the next plan
-is in [`plans/2026-06-19-policy-harness-extension.md`](./plans/2026-06-19-policy-harness-extension.md).
+The bench-numbers + governed-mode reframing reply is live at
+https://github.com/openclaw/rfcs/pull/11#issuecomment-4656114434 (posted
+2026-06-09). The plan in [`implementation.md`](./plans/implementation.md) above
+is the **re-run on real M5 hardware** that produces final citable numbers (the
+2026-06-09 numbers were generated on MacBook); both are valid lower-bound
+measurements.
 
-That plan covers RFC 0012 (reference analyst review teams, layered policy
-composition, clarifying prompts) and a new `openclaw-test-harnesses` repo
-that re-runs the perf bench against *real* claws instead of synthetic
-pass-analysts. The cost delta between `pipeline-noop` (this plan) and
-`pipeline-real-claws` (the next plan) is the headline number for the
-follow-up RFC.
+After M5 numbers land, the next plan is the Stage-1 evidence track:
+[`plans/2026-06-19-policy-harness-extension.md`](./plans/2026-06-19-policy-harness-extension.md).
 
-Do **not** start that work without the bench numbers in hand — the policy
-work builds on the RFC 0010 baseline being citable.
+That plan creates a new public repo `openclaw-test-harnesses` with reference
+review teams (`pii-reviewer` + `phi-reviewer`), layered policy composition,
+clarifying-prompt seam, mock PII/PHI data, and a perf harness that re-runs
+the pipeline-bench variants with *real* claws loaded. Output is a single
+follow-up PR comment on openclaw/rfcs#11 — draft at
+[`plans/pr-comment-when-impl-ships.md`](./plans/pr-comment-when-impl-ships.md).
+
+**No new RFC.** RFC 0012+ land only if maintainers reply asking for the
+sub-designs to be formalized.

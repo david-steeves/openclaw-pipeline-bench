@@ -1,5 +1,5 @@
 # openclaw-pipeline-bench
-# 4 variants share the same Dockerfile; environment + tmpfs mounts differ per variant.
+# 6 variants share the same Dockerfile; environment + tmpfs mounts differ per variant.
 # Run via: docker compose run --rm <variant> --duration <s> --output <path>
 
 x-bench-common: &bench-common
@@ -19,10 +19,26 @@ services:
     tmpfs:
       - /workspace:size=512m
 
+  sqlite-flat:
+    <<: *bench-common
+    environment:
+      BENCH_VARIANT_ID: sqlite-flat
+      PIPELINE_ROOT: /data
+    tmpfs:
+      - /data:size=512m
+
   pipeline-noop:
     <<: *bench-common
     environment:
       BENCH_VARIANT_ID: pipeline-noop
+      PIPELINE_ROOT: /data
+    tmpfs:
+      - /data:size=512m
+
+  pipeline-fullcopy:
+    <<: *bench-common
+    environment:
+      BENCH_VARIANT_ID: pipeline-fullcopy
       PIPELINE_ROOT: /data
     tmpfs:
       - /data:size=512m

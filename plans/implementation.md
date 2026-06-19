@@ -167,3 +167,11 @@ Numbers ready to cite in PR thread by EOD 2026-06-09 if started in the morning.
 > The design is `specs/2026-06-08-pipeline-bench-design.md`. The manifest is the single
 > source of truth — do not hardcode workload params. Numbers are for citing in
 > openclaw/rfcs#11; sanity gates in step 6 are required before sharing.
+
+## Follow-up work (after the bench numbers ship)
+
+See sibling plan: [`2026-06-19-policy-harness-extension.md`](./2026-06-19-policy-harness-extension.md).
+That plan covers RFC 0012 (reference review teams + layered policy composition +
+clarifying prompts) and a new `openclaw-test-harnesses` repo that re-runs the
+pipeline-bench perf tests against *real* claws instead of synthetic
+pass-analysts — the "real cost" number for the next RFC update.

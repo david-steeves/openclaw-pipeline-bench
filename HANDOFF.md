@@ -136,3 +136,19 @@ When the bench finishes:
 
 If anything in this doc is wrong, fix it in place and commit. This file is the
 contract between MacBook-session-Claude and M5-session-Claude.
+
+## Follow-up work after the bench numbers ship
+
+After `make bench-all` finishes and the numbers are posted to
+[openclaw/rfcs#11](https://github.com/openclaw/rfcs/pull/11), the next plan
+is in [`plans/2026-06-19-policy-harness-extension.md`](./plans/2026-06-19-policy-harness-extension.md).
+
+That plan covers RFC 0012 (reference analyst review teams, layered policy
+composition, clarifying prompts) and a new `openclaw-test-harnesses` repo
+that re-runs the perf bench against *real* claws instead of synthetic
+pass-analysts. The cost delta between `pipeline-noop` (this plan) and
+`pipeline-real-claws` (the next plan) is the headline number for the
+follow-up RFC.
+
+Do **not** start that work without the bench numbers in hand — the policy
+work builds on the RFC 0010 baseline being citable.

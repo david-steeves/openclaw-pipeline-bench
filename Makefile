@@ -4,6 +4,11 @@
 SHELL := /bin/bash
 TIMESTAMP := $(shell date -u +%Y%m%dT%H%M%SZ)
 RESULTS_DIR := bench/results/$(TIMESTAMP)
+# Container-side path. docker-compose mounts ./bench/results -> /results, so
+# --output paths passed to the container must use /results/<ts>/... not the
+# host's bench/results/... (which inside the container resolves under WORKDIR
+# /app and lives only inside the ephemeral container — silently lost on --rm).
+CONTAINER_RESULTS_DIR := /results/$(TIMESTAMP)
 VARIANTS := baseline sqlite-flat pipeline-noop pipeline-fullcopy pipeline-1-analyst pipeline-blocking
 
 .PHONY: help install build bench-all clean smoke $(addprefix bench-,$(VARIANTS))
@@ -32,39 +37,39 @@ smoke:
 
 bench-baseline:
 	@mkdir -p $(RESULTS_DIR)/baseline
-	docker compose run --rm baseline --duration 360 --output $(RESULTS_DIR)/baseline/run-1.json
-	docker compose run --rm baseline --duration 360 --output $(RESULTS_DIR)/baseline/run-2.json
-	docker compose run --rm baseline --duration 360 --output $(RESULTS_DIR)/baseline/run-3.json
+	docker compose run --rm baseline --duration 360 --output $(CONTAINER_RESULTS_DIR)/baseline/run-1.json
+	docker compose run --rm baseline --duration 360 --output $(CONTAINER_RESULTS_DIR)/baseline/run-2.json
+	docker compose run --rm baseline --duration 360 --output $(CONTAINER_RESULTS_DIR)/baseline/run-3.json
 
 bench-sqlite-flat:
 	@mkdir -p $(RESULTS_DIR)/sqlite-flat
-	docker compose run --rm sqlite-flat --duration 360 --output $(RESULTS_DIR)/sqlite-flat/run-1.json
-	docker compose run --rm sqlite-flat --duration 360 --output $(RESULTS_DIR)/sqlite-flat/run-2.json
-	docker compose run --rm sqlite-flat --duration 360 --output $(RESULTS_DIR)/sqlite-flat/run-3.json
+	docker compose run --rm sqlite-flat --duration 360 --output $(CONTAINER_RESULTS_DIR)/sqlite-flat/run-1.json
+	docker compose run --rm sqlite-flat --duration 360 --output $(CONTAINER_RESULTS_DIR)/sqlite-flat/run-2.json
+	docker compose run --rm sqlite-flat --duration 360 --output $(CONTAINER_RESULTS_DIR)/sqlite-flat/run-3.json
 
 bench-pipeline-noop:
 	@mkdir -p $(RESULTS_DIR)/pipeline-noop
-	docker compose run --rm pipeline-noop --duration 360 --output $(RESULTS_DIR)/pipeline-noop/run-1.json
-	docker compose run --rm pipeline-noop --duration 360 --output $(RESULTS_DIR)/pipeline-noop/run-2.json
-	docker compose run --rm pipeline-noop --duration 360 --output $(RESULTS_DIR)/pipeline-noop/run-3.json
+	docker compose run --rm pipeline-noop --duration 360 --output $(CONTAINER_RESULTS_DIR)/pipeline-noop/run-1.json
+	docker compose run --rm pipeline-noop --duration 360 --output $(CONTAINER_RESULTS_DIR)/pipeline-noop/run-2.json
+	docker compose run --rm pipeline-noop --duration 360 --output $(CONTAINER_RESULTS_DIR)/pipeline-noop/run-3.json
 
 bench-pipeline-fullcopy:
 	@mkdir -p $(RESULTS_DIR)/pipeline-fullcopy
-	docker compose run --rm pipeline-fullcopy --duration 360 --output $(RESULTS_DIR)/pipeline-fullcopy/run-1.json
-	docker compose run --rm pipeline-fullcopy --duration 360 --output $(RESULTS_DIR)/pipeline-fullcopy/run-2.json
-	docker compose run --rm pipeline-fullcopy --duration 360 --output $(RESULTS_DIR)/pipeline-fullcopy/run-3.json
+	docker compose run --rm pipeline-fullcopy --duration 360 --output $(CONTAINER_RESULTS_DIR)/pipeline-fullcopy/run-1.json
+	docker compose run --rm pipeline-fullcopy --duration 360 --output $(CONTAINER_RESULTS_DIR)/pipeline-fullcopy/run-2.json
+	docker compose run --rm pipeline-fullcopy --duration 360 --output $(CONTAINER_RESULTS_DIR)/pipeline-fullcopy/run-3.json
 
 bench-pipeline-1-analyst:
 	@mkdir -p $(RESULTS_DIR)/pipeline-1-analyst
-	docker compose run --rm pipeline-1-analyst --duration 360 --output $(RESULTS_DIR)/pipeline-1-analyst/run-1.json
-	docker compose run --rm pipeline-1-analyst --duration 360 --output $(RESULTS_DIR)/pipeline-1-analyst/run-2.json
-	docker compose run --rm pipeline-1-analyst --duration 360 --output $(RESULTS_DIR)/pipeline-1-analyst/run-3.json
+	docker compose run --rm pipeline-1-analyst --duration 360 --output $(CONTAINER_RESULTS_DIR)/pipeline-1-analyst/run-1.json
+	docker compose run --rm pipeline-1-analyst --duration 360 --output $(CONTAINER_RESULTS_DIR)/pipeline-1-analyst/run-2.json
+	docker compose run --rm pipeline-1-analyst --duration 360 --output $(CONTAINER_RESULTS_DIR)/pipeline-1-analyst/run-3.json
 
 bench-pipeline-blocking:
 	@mkdir -p $(RESULTS_DIR)/pipeline-blocking
-	docker compose run --rm pipeline-blocking --duration 360 --output $(RESULTS_DIR)/pipeline-blocking/run-1.json
-	docker compose run --rm pipeline-blocking --duration 360 --output $(RESULTS_DIR)/pipeline-blocking/run-2.json
-	docker compose run --rm pipeline-blocking --duration 360 --output $(RESULTS_DIR)/pipeline-blocking/run-3.json
+	docker compose run --rm pipeline-blocking --duration 360 --output $(CONTAINER_RESULTS_DIR)/pipeline-blocking/run-1.json
+	docker compose run --rm pipeline-blocking --duration 360 --output $(CONTAINER_RESULTS_DIR)/pipeline-blocking/run-2.json
+	docker compose run --rm pipeline-blocking --duration 360 --output $(CONTAINER_RESULTS_DIR)/pipeline-blocking/run-3.json
 
 bench-all: build $(addprefix bench-,$(VARIANTS))
 	uv run --with psutil --with pyyaml python scripts/generate_report.py $(RESULTS_DIR) > $(RESULTS_DIR)/REPORT.md
